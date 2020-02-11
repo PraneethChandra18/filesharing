@@ -1,1 +1,17 @@
-<h1> This is index page </h1>
+{% extends 'fileshare/base.html' %}
+
+{% block body %}
+<h2> Folders </h2>
+
+<ul>
+  {% for folder in all_folders %}
+  <li> <a href="{{ folder.id }}">{{ folder }}</a> </li>
+  {% endfor %}
+</ul>
+<ul>
+  {% for file in all_files %}
+  <li> {{ file }} </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

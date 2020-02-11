@@ -1,1 +1,16 @@
-<h1>This is details page</h1>
+{% extends 'fileshare/base.html' %}
+
+{% block body %}
+<h2>This is the details of folder {{ folder_id }}</h2>
+<ul>
+  {% for f in folders %}
+  <li> <a href="{{f.id}}">{{ f }} </a></li>
+  {% endfor %}
+</ul>
+
+<ul>
+  {% for file in files %}
+  <li> {{ file }} </li>
+  {% endfor %}
+</ul>
+{% endblock %}
