@@ -2,9 +2,12 @@
 
 {% block body %}
 <h2>This is the details of folder {{ folder_id }}</h2>
+<a href="{% url 'fileshare:folder-delete' folder_id %}"> <button type="button" class="btn btn-danger"> Delete </button> </a>
+<a href="{% url 'fileshare:linked-folder-add' folder_id %}"> <button type="button" class="btn btn-success"> Add Folder </button> </a>
+
 <ul>
   {% for f in folders %}
-  <li> <a href="{% url 'fileshare:detail' f.id %}">{{ f }} </a></li>
+  <li> <a href="{% url 'fileshare:detail' f.id %}">{{ f }} </a> </li>
   {% endfor %}
 </ul>
 
