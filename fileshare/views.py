@@ -60,6 +60,13 @@ class FolderDelete(DeleteView):
     def get_success_url(self):
         f = Folder.objects.get(pk = self.kwargs['pk'])
         folder = f.linkedfolder
-        print(folder.pk)
-        return reverse_lazy('fileshare:detail',kwargs={'folder_id': folder.pk})
-#-------------------------------------------------------------------------------------------------------
+        if not folder:
+            return reverse_lazy('fileshare:index')
+        else:
+            return reverse_lazy('fileshare:detail',kwargs={'folder_id': folder.pk})
+
+    def get(self, *args, **kwargs):
+            return self.post(*args, **kwargs)
+    # the above get function is used to delete the model without confirmation.
+
+#------------------------------------------------------------------------------------------------------
