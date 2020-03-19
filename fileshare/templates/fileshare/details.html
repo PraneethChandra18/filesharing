@@ -1,10 +1,10 @@
 {% extends 'fileshare/base.html' %}
 
 {% block body %}
-<h2>This is the details of folder {{ folder_id }}</h2>
+<h2>This is the details of folder {{ pk }}</h2>
 <ul>
   {% for f in folders %}
-  <li> <a href="{% url 'fileshare:detail' f.id %}">{{ f }} </a></li>
+  <li> <a href="{% url 'fileshare:detail' f.pk %}">{{ f }} </a></li>
   {% endfor %}
 </ul>
 
@@ -13,4 +13,6 @@
   <li> {{ file }} </li>
   {% endfor %}
 </ul>
+<a href="{% url 'fileshare:folder-add'   pk %}">add folder</a>
 {% endblock %}
+ 
