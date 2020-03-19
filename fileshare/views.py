@@ -71,3 +71,11 @@ class FolderDelete(DeleteView):
     # the above get function is used to delete the model without confirmation.
 
 #------------------------------------------------------------------------------------------------------
+
+class FileAdd(CreateView):
+    model = File
+    fields = ['file']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(FileAdd, self).form_valid(form)

@@ -5,7 +5,7 @@
 
 <ul>
   {% for folder in all_folders %}
-  <li> <a href="{{ folder.id }}">{{ folder }}</a> </li>
+  <li> <a href="{% url 'fileshare:detail' folder.pk %}">{{ folder }}</a> </li>
   {% endfor %}
 </ul>
 <ul>
