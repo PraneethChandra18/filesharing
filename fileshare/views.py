@@ -41,7 +41,8 @@ def Folder_Create(request,pk):
 
         if form.is_valid():
             new_folder = form.save(commit=False)
-            new_folder.linkedfolder = Folder.objects.get(pk=pk)
+            if pk:
+                new_folder.linkedfolder = Folder.objects.get(pk=pk)
             new_folder.user = request.user
             new_folder.save()
             return redirect('fileshare:detail',pk)
