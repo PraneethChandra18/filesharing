@@ -8,7 +8,7 @@ from datetime import date, datetime
 import time
 from threading import Timer
 from .models import Folder, File
-from .forms import FolderForm, FileForm
+from .forms import FolderForm, FileForm #FolderUploadForm
 # Create your views here.
 
 def index(request):
@@ -69,11 +69,11 @@ class FolderDelete(DeleteView):
     def get(self, *args, **kwargs):
             return self.post(*args, **kwargs)
     # the above get function is used to delete the model without confirmation.
-
+#-----------------------------------------------------------------------------------------------------
 class FolderUpdate(UpdateView):
     model = Folder
     fields = ['name']
-    
+
 #------------------------------------------------------------------------------------------------------
 
 # class FileAdd(CreateView):
@@ -122,6 +122,7 @@ def AddLinkedFile(request,pk):
             for field in request.FILES.keys():
                 for formfile in request.FILES.getlist(field):
                     f = File(file=formfile,user=request.user,folder=Folder.objects.get(pk=pk))
+                    f.name = f.filename()
                     f.save()
             return redirect('fileshare:detail',pk)
         else:
@@ -144,4 +145,43 @@ class FileDelete(DeleteView):
 
     def get(self, *args, **kwargs):
             return self.post(*args, **kwargs)
+#---------------------------------------------------------------------------------------------------------
+class FileUpdate(UpdateView):
+    model = File
+    fields = ['name']
+
+#---------------------------------------------------------------------------------------------------------
+
+
+# def AddFolder(request):
+#     if request.method == 'POST':
+#         form = FolderUploadForm(request.POST, request.FILES)
+#
+#         if form.is_valid():
+#             for field in request.FILES.keys():
+#                 for formfile in request.FILES.getlist(field):
+#                     f = File(file=formfile,user=request.user)
+#                     f.save()
+#             return redirect('fileshare:index')
+#         else:
+#             return render(request,'fileshare/file_form.html',{'form':form })
+#     else:
+#         form = FolderUploadForm(None)
+#         return render(request,'fileshare/file_form.html',{'form':form })
+#
+# def AddLinkedFolder(request,pk):
+#     if request.method == 'POST':
+#         form = FolderUploadForm(request.POST, request.FILES)
+#
+#         if form.is_valid():
+#             for field in request.FILES.keys():
+#                 for formfile in request.FILES.getlist(field):
+#                     f = File(file=formfile,user=request.user,folder=Folder.objects.get(pk=pk))
+#                     f.save()
+#             return redirect('fileshare:detail',pk)
+#         else:
+#             return render(request,'fileshare/file_form.html',{'form':form })
+#     else:
+#         form = FolderUploadForm(None)
+#         return render(request,'fileshare/file_form.html',{'form':form })
 #----------------------------------------------------------------------------------------------------------

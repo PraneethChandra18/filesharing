@@ -13,5 +13,7 @@ urlpatterns = [
     path('file/add/',views.AddFile,name='file-add'),
     path('file/add/<int:pk>',views.AddLinkedFile,name='linked-file-add'),
     path('file/delete/<int:pk>',views.FileDelete.as_view(),name='file-delete'),
-
+    path('file/update/<int:pk>',views.FileUpdate.as_view(),name='file-update'),
+    # path('folder/upload/',views.AddFolder,name='folder-upload'),
+    # path('folder/upload/<int:pk>',views.AddLinkedFolder,name='linked-folder-upload'),
 ]
