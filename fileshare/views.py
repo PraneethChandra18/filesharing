@@ -70,6 +70,10 @@ class FolderDelete(DeleteView):
             return self.post(*args, **kwargs)
     # the above get function is used to delete the model without confirmation.
 
+class FolderUpdate(UpdateView):
+    model = Folder
+    fields = ['name']
+    
 #------------------------------------------------------------------------------------------------------
 
 # class FileAdd(CreateView):
