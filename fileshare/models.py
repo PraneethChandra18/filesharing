@@ -8,7 +8,6 @@ class Folder(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
     name = models.CharField(max_length=50)
     linkedfolder = models.ForeignKey("self",on_delete=models.CASCADE,null=True,blank=True)
-    author = models.CharField(max_length=100)
     lastmodified = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
