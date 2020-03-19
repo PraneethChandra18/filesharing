@@ -19,10 +19,13 @@ class Folder(models.Model):
 class File(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
     folder=models.ForeignKey(Folder,on_delete=models.CASCADE,null=True,blank=True)
-    name = models.CharField(max_length=50)
-    file=models.FileField()
-    info=models.TextField()
+    name = models.CharField(max_length=50,null=True,blank=True)
+    file=models.FileField();
+    info=models.TextField(null=True,blank=True)
     created_on = models.DateTimeField(auto_now_add=True)
 
+    def get_absolute_url(self):
+        return reverse('fileshare:index')
+
     def __str__(self):
-        return self.name
+        return self.user.username

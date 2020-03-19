@@ -9,5 +9,6 @@ urlpatterns = [
     path('folder/add/',views.FolderCreate.as_view(),name='folder-add'),
     path('folder/add/<int:pk>',views.Folder_Create,name='linked-folder-add'),
     path('folder/delete/<int:pk>',views.FolderDelete.as_view(),name='folder-delete'),
+    path('file/add/',views.FileAdd.as_view(),name='file-add'),
 
 ]

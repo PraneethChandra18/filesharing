@@ -40,11 +40,9 @@
   <li> {{ file }} </li>
   {% endfor %}
 </ul>
-<a href="{% url 'fileshare:folder-add'   pk %}">add folder</a>
+<a href="{% url 'fileshare:folder-add' pk %}">add folder</a>
 {% endblock %}
  
-
-
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> Delete </button>
   <div class="modal" id="myModal">
     <div class="modal-dialog">
