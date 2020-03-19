@@ -25,14 +25,14 @@ def detail(request,folder_id):
     files = folder.file_set.all()
     folders = folder.folder_set.all()
     # Try folder_set.all() when model is 'folder' instead of 'Folder'
-    context={'folder':folder,'folders':folders,'files':files,'pk':pk}
+    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id}
     return render(request,'fileshare/details.html',context)
 #------------------------------------------------------------------------------------------------------
 class FolderCreate(LoginRequiredMixin, CreateView):
     model = Folder
     fields = ['name']
 
-    def form_valid(self, form):
+    def form_valid(self, form): 
         form.instance.user = self.request.user
         return super(FolderCreate, self).form_valid(form)
 
