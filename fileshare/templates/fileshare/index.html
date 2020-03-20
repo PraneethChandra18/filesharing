@@ -6,7 +6,10 @@
 <ul>
   {% for folder in all_folders %}
   <li> <a href="{% url 'fileshare:detail' folder.pk %}">{{ folder }}</a> </li>
+  {% empty %}
+  <p>no folders yet. add some by clicking add folder in nav bar</p>
   {% endfor %}
+  
 </ul>
 
 <h2> Files </h2>
@@ -34,6 +37,8 @@
     </div>
 
   </li>
+  {% empty %}
+  <p>no files yet. add some by clicking add folder in nav bar</p>
   {% endfor %}
 </ul>
 

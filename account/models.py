@@ -24,7 +24,6 @@ class User_profile(models.Model):
     department = models.CharField(max_length=100)
     gender = models.ForeignKey(Gender,on_delete=models.CASCADE)
     bio = models.TextField(null=True,blank=True)
-
     def get_absolute_url(self):
         return reverse('account:profile-view')
 

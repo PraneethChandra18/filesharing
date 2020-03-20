@@ -31,21 +31,14 @@
 <ul>
   {% for f in folders %}
   <li> <a href="{% url 'fileshare:detail' f.id %}">{{ f }} </a> </li>
- 
+  {% empty %}
+        <p>No Folders here yet :(</p>
   {% endfor %}
 </ul>
 
 <h2>Files</h2>
 <ul>
   {% for file in files %}
-<<<<<<< HEAD
-  <li><a href="{{ file.file.url }}" target="_blank">{{file.file}} </li>
-  {% endfor %}
-</ul>
- 
-{% endblock %}
- 
-=======
   <li> <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
     <a href="{% url 'fileshare:file-update' file.pk %}"> <button type="button" class="btn btn-secondary"> Edit </button> </a>
 
@@ -71,7 +64,8 @@
       </div>
     </div>
   </li>
+  {% empty %}
+        <p>No Files here yet :(</p>
   {% endfor %}
 </ul>
 {% endblock %}
->>>>>>> 6b52365bdb1bc4aeba68a0586bf510d339bff347
