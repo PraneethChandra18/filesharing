@@ -9,7 +9,7 @@ from datetime import date, datetime
 import time
 from threading import Timer
 from .models import Folder, File
-from .forms import FolderForm,FileForm
+from .forms import FolderForm, FileForm #FolderUploadForm
 # Create your views here.
 
 def index(request):
@@ -70,29 +70,119 @@ class FolderDelete(DeleteView):
     def get(self, *args, **kwargs):
             return self.post(*args, **kwargs)
     # the above get function is used to delete the model without confirmation.
+#-----------------------------------------------------------------------------------------------------
+class FolderUpdate(UpdateView):
+    model = Folder
+    fields = ['name']
 
 #------------------------------------------------------------------------------------------------------
-"""class FileAdd(CreateView):
-    model = File
-    fields = ['file']
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super(FileAdd, self).form_valid(form)
-"""
+# class FileAdd(CreateView):
+#     model = File
+#     fields = ['file']
+#
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         obj = form.save(commit=False)
+#         if self.request.FILES:
+#             for f in self.request.FILES.getlist('file'):
+#                 obj = File(file=f,user=self.request.user)
+#
+#         return super(FileAdd, self).form_valid(form)
 
-class FileFieldView(FormView):
-    form_class = FileFieldForm
-    template_name = 'upload.html'  # Replace with your template.
-    success_url = '...'  # Replace with your URL or reverse().
 
-    def post(self, request, *args, **kwargs):
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        files = request.FILES.getlist('file_field')
+
+        # form.instance.user = self.request.user
+        # for field in self.request.FILES.keys():
+        #     for f in self.request.FILES.getlist(field):
+        #         fi = File(file=f,user=self.request.user)
+        #         fi.save()
+#----------------------------------------------------------------------------------------------------------
+
+def AddFile(request):
+    if request.method == 'POST':
+        form = FileForm(request.POST, request.FILES)
+
         if form.is_valid():
-            for f in files:
-                ...  # Do something with each file.
-            return self.form_valid(form)
+            for field in request.FILES.keys():
+                for formfile in request.FILES.getlist(field):
+                    f = File(file=formfile,user=request.user)
+                    f.save()
+            return redirect('fileshare:index')
         else:
-            return self.form_invalid(form)
+            return render(request,'fileshare/file_form.html',{'form':form })
+    else:
+        form = FileForm(None)
+        return render(request,'fileshare/file_form.html',{'form':form })
+
+def AddLinkedFile(request,pk):
+    if request.method == 'POST':
+        form = FileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            for field in request.FILES.keys():
+                for formfile in request.FILES.getlist(field):
+                    f = File(file=formfile,user=request.user,folder=Folder.objects.get(pk=pk))
+                    f.name = f.filename()
+                    f.save()
+            return redirect('fileshare:detail',pk)
+        else:
+            return render(request,'fileshare/file_form.html',{'form':form })
+    else:
+        form = FileForm(None)
+        return render(request,'fileshare/file_form.html',{'form':form })
+#--------------------------------------------------------------------------------------------------------
+
+class FileDelete(DeleteView):
+    model = File
+
+    def get_success_url(self):
+        f = File.objects.get(pk = self.kwargs['pk'])
+        folder = f.folder
+        if not folder:
+            return reverse_lazy('fileshare:index')
+        else:
+            return reverse_lazy('fileshare:detail',kwargs={'folder_id': folder.pk})
+
+    def get(self, *args, **kwargs):
+            return self.post(*args, **kwargs)
+#---------------------------------------------------------------------------------------------------------
+class FileUpdate(UpdateView):
+    model = File
+    fields = ['name']
+
+#---------------------------------------------------------------------------------------------------------
+
+
+# def AddFolder(request):
+#     if request.method == 'POST':
+#         form = FolderUploadForm(request.POST, request.FILES)
+#
+#         if form.is_valid():
+#             for field in request.FILES.keys():
+#                 for formfile in request.FILES.getlist(field):
+#                     f = File(file=formfile,user=request.user)
+#                     f.save()
+#             return redirect('fileshare:index')
+#         else:
+#             return render(request,'fileshare/file_form.html',{'form':form })
+#     else:
+#         form = FolderUploadForm(None)
+#         return render(request,'fileshare/file_form.html',{'form':form })
+#
+# def AddLinkedFolder(request,pk):
+#     if request.method == 'POST':
+#         form = FolderUploadForm(request.POST, request.FILES)
+#
+#         if form.is_valid():
+#             for field in request.FILES.keys():
+#                 for formfile in request.FILES.getlist(field):
+#                     f = File(file=formfile,user=request.user,folder=Folder.objects.get(pk=pk))
+#                     f.save()
+#             return redirect('fileshare:detail',pk)
+#         else:
+#             return render(request,'fileshare/file_form.html',{'form':form })
+#     else:
+#         form = FolderUploadForm(None)
+#         return render(request,'fileshare/file_form.html',{'form':form })
+#----------------------------------------------------------------------------------------------------------

@@ -3,6 +3,13 @@
 {% block title%} Add Folder {% endblock %}
 
 {% block body %}
+<script>
+  $(document).ready(function(){
+    $('#id_file').attr("multiple","true");
+
+  })
+ </script>
+ 
 <div class="card-body" style="background-color:white">
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
