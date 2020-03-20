@@ -1,7 +1,7 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView,FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
@@ -9,7 +9,7 @@ from datetime import date, datetime
 import time
 from threading import Timer
 from .models import Folder, File
-from .forms import FolderForm
+from .forms import FolderForm,FileForm
 # Create your views here.
 
 def index(request):
@@ -72,11 +72,27 @@ class FolderDelete(DeleteView):
     # the above get function is used to delete the model without confirmation.
 
 #------------------------------------------------------------------------------------------------------
-
-class FileAdd(CreateView):
+"""class FileAdd(CreateView):
     model = File
     fields = ['file']
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super(FileAdd, self).form_valid(form)
+"""
+
+class FileFieldView(FormView):
+    form_class = FileFieldForm
+    template_name = 'upload.html'  # Replace with your template.
+    success_url = '...'  # Replace with your URL or reverse().
+
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('file_field')
+        if form.is_valid():
+            for f in files:
+                ...  # Do something with each file.
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
