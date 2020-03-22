@@ -26,8 +26,16 @@ def detail(request,folder_id):
     folder = get_object_or_404(Folder,pk=folder_id)
     files = folder.file_set.all()
     folders = folder.folder_set.all()
+    temp = folder 
+    parent_list = []
+    parent_list.append(temp)
+    while  temp.linkedfolder :
+        parent = temp.linkedfolder
+        parent_list.append(parent)
+        temp = parent
+    parent_list.reverse()
     # Try folder_set.all() when model is 'folder' instead of 'Folder'
-    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id}
+    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id,'parent_list':parent_list}
     return render(request,'fileshare/details.html',context)
 #------------------------------------------------------------------------------------------------------
 class FolderCreate(LoginRequiredMixin, CreateView):
