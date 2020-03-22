@@ -15,7 +15,9 @@
 <h2> Files </h2>
 <ul>
   {% for file in all_files %}
-  <li> <a href="{{ file.file.url }}" target="_blank"> {{ file.file }} </a>
+  <li> <i class="fas fa-file"></i> &nbsp;<a href="{{ file.file.url }}" target="_blank"> {{ file.file }} </a>
+    <a href="{% url 'fileshare:file-update' file.pk %}"> <button type="button" class="btn btn-secondary"> Edit </button> </a>
+
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal{{file.pk}}"> Delete </button>
     <div class="modal" id="myModal{{file.pk}}">
       <div class="modal-dialog">

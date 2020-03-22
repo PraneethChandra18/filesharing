@@ -5,7 +5,7 @@
 <h2>Folders</h2>
 <ul>
   {% for f in folders %}
-  <li> <a href="{% url 'fileshare:detail' f.id %}">{{ f }} </a> </li>
+  <li> <a href="{% url 'home:userdetails' f.id %}">{{ f }} </a> </li>
   {% endfor %}
 </ul>
 
