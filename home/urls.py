@@ -10,3 +10,4 @@ urlpatterns = [
     path('search/ff', views.searchff,name='search-ff'),
     path('search/users', views.searchusers,name='search-users'),
 ]
+ 
