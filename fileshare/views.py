@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView,FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,6 +11,7 @@ import time
 from threading import Timer
 from .models import Folder, File
 from .forms import FolderForm, FileForm #FolderUploadForm
+from account.models import User_profile
 # Create your views here.
 
 def index(request):
@@ -186,3 +188,14 @@ class FileUpdate(UpdateView):
 #         form = FolderUploadForm(None)
 #         return render(request,'fileshare/file_form.html',{'form':form })
 #----------------------------------------------------------------------------------------------------------
+@login_required
+def userlist(request):
+    users=User_profile.objects.all()
+    context={'users': users}
+    return render(request,'fileshare/userlist.html',context)
+#----------------------------------------------------------------------------------------------------------
+@login_required
+def userlist(request,pk):
+    users=User_profile.objects.all()
+    context={'users': users}
+    return render(request,'fileshare/userlist.html',context)

@@ -28,4 +28,4 @@ class User_profile(models.Model):
         return reverse('account:profile-view')
 
     def __str__(self):
-        return self.bio
+        return self.name

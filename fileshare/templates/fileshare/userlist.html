@@ -1,0 +1,11 @@
+{% extends 'fileshare/base.html' %}
+{% block body %}
+<h2>Users</h2>
+<ul>
+  {% for user in users %}
+  <li> <a href="{{ url 'fileshare:userdetail' user.pk }}">{{ user.name }} </a> </li>
+  {% empty %}
+        <p>No Folders here yet :(</p>
+  {% endfor %}
+</ul>
+{% endblock %}

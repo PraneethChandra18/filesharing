@@ -31,4 +31,4 @@ def show(path="."):
     show_files(f_list,path)
     show_dir(d_list,path)
 
-show("./projects/filesharing/fileshare")
+show(",/filesharing/fileshare")

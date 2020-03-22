@@ -5,6 +5,8 @@ app_name = 'fileshare'
 
 urlpatterns = [
     path('', views.index,name='index'),
+    path('userlist',views.userlist,name='userlist'),
+    path('userdetail',views.userdetail,name='userdetail'),
     path('<int:folder_id>/',views.detail,name='detail'),
     path('folder/add/',views.FolderCreate.as_view(),name='folder-add'),
     path('folder/add/<int:pk>',views.Folder_Create,name='linked-folder-add'),
