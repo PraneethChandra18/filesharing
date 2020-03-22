@@ -1,0 +1,13 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+  <ul>
+    {% for u in all_users %}
+      {% if not u.pk is current_user.pk %}
+        <li> <a href="{% url 'home:userindex' u.pk %}">{{ u.username }}</a> </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+
+
+{% endblock %}

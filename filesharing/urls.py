@@ -7,7 +7,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('fileshare/',include('fileshare.urls')),
     path('account/', include('account.urls')),
-
+    path('home/', include('home.urls')),
     path('oauth/',include('social_django.urls',namespace="social")),
 
 ]

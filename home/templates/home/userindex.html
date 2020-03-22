@@ -1,0 +1,41 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+
+<h2> Folders </h2>
+
+  <ul>
+    {% for folder in all_folders %}
+    <li> <a href="{% url 'home:userdetails' folder.pk %}">{{ folder }}</a> </li>
+    {% endfor %}
+  </ul>
+
+  <h2> Files </h2>
+  <ul>
+    {% for file in all_files %}
+    <li> <a href="{{ file.file.url }}" target="_blank"> {{ file.file }} </a>
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal{{file.pk}}"> Delete </button>
+      <div class="modal" id="myModal{{file.pk}}">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"> Delete </h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body"> Are you sure to delete ? </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal"> Cancel </button>
+              <a href="{% url 'fileshare:file-delete' file.pk %}"> <button type="button" class="btn btn-danger"> Delete </button> </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </li>
+    {% endfor %}
+  </ul>
+
+{% endblock %}

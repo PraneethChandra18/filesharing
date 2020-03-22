@@ -11,7 +11,7 @@ import time
 from threading import Timer
 from .models import Folder, File
 from .forms import FolderForm, FileForm #FolderUploadForm
-from account.models import User_profile
+import os
 # Create your views here.
 
 def index(request):
@@ -125,6 +125,7 @@ def AddLinkedFile(request,pk):
             for field in request.FILES.keys():
                 for formfile in request.FILES.getlist(field):
                     f = File(file=formfile,user=request.user,folder=Folder.objects.get(pk=pk))
+                    # print(str(os.path.abspath(f.file.name)))
                     f.name = f.filename()
                     f.save()
             return redirect('fileshare:detail',pk)
@@ -154,7 +155,6 @@ class FileUpdate(UpdateView):
     fields = ['name']
 
 #---------------------------------------------------------------------------------------------------------
-
 
 # def AddFolder(request):
 #     if request.method == 'POST':
@@ -188,14 +188,3 @@ class FileUpdate(UpdateView):
 #         form = FolderUploadForm(None)
 #         return render(request,'fileshare/file_form.html',{'form':form })
 #----------------------------------------------------------------------------------------------------------
-@login_required
-def userlist(request):
-    users=User_profile.objects.all()
-    context={'users': users}
-    return render(request,'fileshare/userlist.html',context)
-#----------------------------------------------------------------------------------------------------------
-@login_required
-def userlist(request,pk):
-    users=User_profile.objects.all()
-    context={'users': users}
-    return render(request,'fileshare/userlist.html',context)

@@ -1,4 +1,4 @@
-from .models import Folder, File
+from .models import Folder, File #FolderUpload
 from django import forms
 
 
@@ -15,8 +15,8 @@ class FileForm(forms.ModelForm):
         fields = ['file']
 
 # class FolderUploadForm(forms.ModelForm):
-#     file = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory': True, 'directory': True}))
+#     folder = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True, 'webkitdirectory': True, 'directory': True}))
 #
 #     class Meta:
-#         model = File
-#         fields = ['file']
+#         model = FolderUpload
+#         fields = ['folder']
