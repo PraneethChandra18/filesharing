@@ -47,9 +47,39 @@
   {% for file in files %}
   <li> <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
     <a href="{% url 'fileshare:file-update' file.pk %}"> <button type="button" class="btn btn-secondary"> Edit </button> </a>
+<!--------------------------------------modal edit form---------------------------------------------------------------------------->
+<div class="modal fade" id="modalLoginForm{{file.pk}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Edit</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <i class="fas fa-envelope prefix grey-text"></i>
+          <input type="email" id="defaultForm-email" class="form-control validate">
+          <label data-error="wrong" data-success="right" for="defaultForm-email">New name</label>
+        </div>
+ 
 
-    <!-- <a href="{% url 'fileshare:file-delete' file.pk %}"><button type="button" class="btn btn-danger"> Delete </button> </a> -->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal{{file.pk}}"> Delete </button>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <a href="{% url 'fileshare:file-update' file.pk %}"><button class="btn btn-default">Save</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center">
+  <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm{{file.pk}}">Edit the name</a>
+</div>
+<!------------------------------------------------------------------------------------------------------------------>
+<!-- <a href="{% url 'fileshare:file-delete' file.pk %}"><button type="button" class="btn btn-danger"> Delete </button> </a> -->
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal{{file.pk}}"> theesey </button>
     <!-- Here each modal should have its respective div-id. So we tagged file.pk to name of id -->
     <div class="modal" id="Modal{{file.pk}}">
       <div class="modal-dialog">
