@@ -18,7 +18,7 @@ class Gender(models.Model):
 class User_profile(models.Model):
     user  = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
     name = models.CharField(max_length=100)
-    photo = models.FileField(null=True,blank=True)
+    photo = models.FileField(upload_to='profile-photos',null=True,blank=True)
     date_of_birth = models.DateField(null=True,blank=True)
     hostel = models.CharField(max_length=100)
     department = models.CharField(max_length=100)

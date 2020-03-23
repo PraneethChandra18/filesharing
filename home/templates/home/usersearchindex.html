@@ -2,10 +2,18 @@
 
 {% block body %}
 
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"> <a href="{% url 'home:users' %}"> Home </a></li>
-  <li class="breadcrumb-item"> <a href="{% url 'home:userindex' u.pk %}"> {{ u.username }} </a> </li>
-</ol>
+<h2> Users </h2>
+{% if all_users %}
+  <ul>
+    {% for u in all_users %}
+      {% if not u.pk is current_user.pk %}
+        <li> <a href="{% url 'home:userindex' u.pk %}">{{ u.username }}</a> </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% else %}
+  <h3> No matching users:( </h3>
+{% endif %}
 
 <h2> Folders </h2>
 {% if all_folders %}
@@ -15,7 +23,7 @@
     {% endfor %}
   </ul>
 {% else %}
-  <h3> No folders here yet :( </h3>
+  <h3> No matching folders:( </h3>
 {% endif %}
 
 <h2> Files </h2>
@@ -26,7 +34,7 @@
   {% endfor %}
 </ul>
 {% else %}
-  <h3> No files here yet :( </h3>
+  <h3> No matching files:( </h3>
 {% endif %}
 
 {% endblock %}

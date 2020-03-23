@@ -46,7 +46,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request,user)
-                return redirect('fileshare:index')
+                return redirect('home:users')
         else:
             return render(request,'account/login_form.html',{'form':form})
     else:
@@ -73,7 +73,7 @@ def loginredirect(request):
     except User_profile.DoesNotExist:
         return redirect('account:profile-add')
     else:
-        return redirect('fileshare:index')
+        return redirect('home:users')
 
 class ProfileCreate(LoginRequiredMixin, CreateView):
     model = User_profile

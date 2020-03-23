@@ -14,6 +14,8 @@ urlpatterns = [
     path('file/add/<int:pk>',views.AddLinkedFile,name='linked-file-add'),
     path('file/delete/<int:pk>',views.FileDelete.as_view(),name='file-delete'),
     path('file/update/<int:pk>',views.FileUpdate.as_view(),name='file-update'),
+    path('select/<int:pk>/',views.select,name='select'),
+    path('list_delete/<int:pk>/',views.list_delete,name='list_delete'),
     # path('folder/upload/',views.AddFolder,name='folder-upload'),
     # path('folder/upload/<int:pk>',views.AddLinkedFolder,name='linked-folder-upload'),
 ]

@@ -19,19 +19,16 @@
       </button>
       <div class="collapse navbar-collapse" id="topNavbar">
         <div class="mx-auto order-0">
-          <form class="form-inline" action="{% url 'home:search-ff' %}" role="search" method="get" >
+          <form class="form-inline" action="{% url 'home:search' %}" role="search" method="get">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" name="q" value="{{ request.GET.q }}">
-            <div class="dropdown">
-                <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown"> Search&nbsp;</button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <button class="btn btn-default" type="submit" style="background-color:white"> All Folder, Files</button>
-                  <button class="btn btn-default" type="submit" style="background-color:white" formaction="{% url 'home:search-users' %}">Users</button>
-                </div>
-            </div>
+            <button class="btn btn-default" type="submit" style="background-color:white"> Search&nbsp;</button>
           </form>
         </div>
 <!-- <ul class="navbar-nav ml-auto justify-content-end">    ->Can also use this to make it align right-->
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#"> Select &nbsp;</a>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'fileshare:folder-add' %}"><i class='fas fa-plus'></i> Add Folder &nbsp;</a>
           </li>
