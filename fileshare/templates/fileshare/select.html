@@ -1,0 +1,45 @@
+{% extends 'fileshare/base.html'%}
+
+{% block body %}
+
+<form action="{% url 'fileshare:list_delete' folder.pk %}" method="get">
+  <h2>Folders</h2>
+  {% for f in folders %}
+    <div class="form-check">
+      <label class="form-check-label" for="check1">
+        <input type="checkbox" class="form-check-input" id="check1{{f.pk}}" name="folder" value="{{ f.pk }}" checked>{{ f }}
+      </label>
+    </div>
+  {% endfor %}
+
+  <h2>Files</h2>
+  {% for f in files %}
+    <div class="form-check">
+      <label class="form-check-label" for="check1">
+        <input type="checkbox" class="form-check-input" id="check2{{f.pk}}" name="file" value="{{ f.pk }}" checked>{{ f }}
+      </label>
+    </div>
+  {% endfor %}
+
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal"> Delete </button>
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title"> Delete </h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <div class="modal-body"> Are you sure to delete these folders and files? </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal"> Cancel </button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

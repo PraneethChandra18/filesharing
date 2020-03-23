@@ -2,18 +2,41 @@
 
 {% block body %}
 
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"> <a href="{% url 'home:users' %}"> Home </a></li>
+  <li class="breadcrumb-item"> <a href="{% url 'home:userindex' u.pk %}"> {{ u.username }} </a> </li>
+
+  {% for parent in parent_list %}
+    {% if parent is not active_folder %}
+      <li class="breadcrumb-item"> <a href="{% url 'home:userdetails' parent.id %}"> {{ parent }}</a> </li>
+    {% else %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'home:userdetails' parent.id %}" style="color:black"> {{ parent }}</a></li>
+    {% endif %}
+  {% endfor %}
+</ol>
+
 <h2>Folders</h2>
+{% if folders %}
 <ul>
   {% for f in folders %}
   <li> <a href="{% url 'home:userdetails' f.id %}">{{ f }} </a> </li>
   {% endfor %}
 </ul>
+{% else %}
+  <h3> No folders here yet :( </h3>
+{% endif %}
 
 <h2>Files</h2>
 <ul>
+  {% if files %}
   {% for file in files %}
   <li> <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
   </li>
   {% endfor %}
 </ul>
+{% else %}
+  <h3> No files here yet :( </h3>
+{% endif %}
+
 {% endblock %}

@@ -2,8 +2,13 @@
 
 {% block body %}
 
-<h2> Folders </h2>
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"> <a href="{% url 'home:users' %}"> Home </a></li>
+  <li class="breadcrumb-item"> <a href="{% url 'home:userindex' u.pk %}"> {{ u.username }} </a> </li>
+</ol>
 
+<h2> Folders </h2>
+{% if all_folders %}
   <ul>
     {% for folder in all_folders %}
     <li> <i class="fas fa-file"></i>&nbsp;<a href="{% url 'home:userdetails' folder.pk %}">{{ folder }}</a> </li>

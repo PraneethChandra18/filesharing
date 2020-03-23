@@ -1,0 +1,40 @@
+{% extends 'home/base.html' %}
+
+{% block body %}
+
+<h2> Users </h2>
+{% if all_users %}
+  <ul>
+    {% for u in all_users %}
+      {% if not u.pk is current_user.pk %}
+        <li> <a href="{% url 'home:userindex' u.pk %}">{{ u.username }}</a> </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% else %}
+  <h3> No matching users:( </h3>
+{% endif %}
+
+<h2> Folders </h2>
+{% if all_folders %}
+  <ul>
+    {% for folder in all_folders %}
+    <li> <a href="{% url 'home:userdetails' folder.pk %}">{{ folder }}</a> </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <h3> No matching folders:( </h3>
+{% endif %}
+
+<h2> Files </h2>
+{% if all_files %}
+<ul>
+  {% for file in all_files %}
+  <li> <a href="{{ file.file.url }}" target="_blank"> {{ file.file }} </a> </li>
+  {% endfor %}
+</ul>
+{% else %}
+  <h3> No matching files:( </h3>
+{% endif %}
+
+{% endblock %}

@@ -24,7 +24,7 @@ def userindex(request,pk):
     user_files = File.objects.filter(user=user)
     all_folders = user_folders.filter(linkedfolder__isnull=True)
     all_files = user_files.filter(folder__isnull=True)
-    context = { 'all_folders':all_folders,'all_files':all_files }
+    context = { 'all_folders':all_folders,'all_files':all_files,'u':user }
 
     return render(request,'home/userindex.html',context)
 
@@ -33,30 +33,32 @@ def userdetails(request,folder_id):
     files = folder.file_set.all()
     folders = folder.folder_set.all()
     # Try folder_set.all() when model is 'folder' instead of 'Folder'
-    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id}
+    temp = folder
+    parent_list = []
+    user = folder.user
+    parent_list.append(temp)
+    while temp.linkedfolder:
+        parent = temp.linkedfolder
+        parent_list.append(parent)
+        temp = parent
+
+    active_folder = parent_list[0]
+    parent_list.reverse()
+    print(parent_list)
+    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id,'parent_list':parent_list,'active_folder':active_folder,'u':user}
     return render(request,'home/userdetails.html',context)
 
-def searchff(request):
-    all_users = User.objects.all()
-    query = request.GET.get('q')
-    if query:
-        all_folders = Folder.objects.filter(Q(name__icontains=query))
-        all_files = File.objects.filter(Q(name__icontains=query))
-        context = { 'all_folders':all_folders,'all_files':all_files }
-        return render(request,'home/userindex.html',context)
-
-    else:
-        return render(request,'home/users.html',{'all_users': all_users})
-
-def searchusers(request):
+def search(request):
     all_users = User.objects.all()
     current_user = request.user
 
     query = request.GET.get('q')
     if query:
+        all_folders = Folder.objects.filter(Q(name__icontains=query))
+        all_files = File.objects.filter(Q(name__icontains=query))
         users = User.objects.filter(Q(username__icontains=query))
-        context = { 'all_users':users,'current_user':current_user }
-        return render(request,'home/users.html',context)
+        context = { 'all_folders':all_folders,'all_files':all_files, 'all_users':users,'current_user':current_user }
+        return render(request,'home/usersearchindex.html',context)
 
     else:
-        return render(request,'home/users.html',{'all_users': all_users,'current_user':current_user})
+        return render(request,'home/error.html')

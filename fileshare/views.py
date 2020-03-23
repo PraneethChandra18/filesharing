@@ -26,16 +26,18 @@ def detail(request,folder_id):
     folder = get_object_or_404(Folder,pk=folder_id)
     files = folder.file_set.all()
     folders = folder.folder_set.all()
-    temp = folder 
+     
+    # Try folder_set.all() when model is 'folder' instead of 'Folder'
+    temp = folder
     parent_list = []
     parent_list.append(temp)
-    while  temp.linkedfolder :
+    while temp.linkedfolder:
         parent = temp.linkedfolder
         parent_list.append(parent)
         temp = parent
+    active_folder = parent_list[0]
     parent_list.reverse()
-    # Try folder_set.all() when model is 'folder' instead of 'Folder'
-    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id,'parent_list':parent_list}
+    context={'folder':folder,'folders':folders,'files':files,'folder_id':folder_id,'parent_list':parent_list,'active_folder':active_folder}
     return render(request,'fileshare/details.html',context)
 #------------------------------------------------------------------------------------------------------
 class FolderCreate(LoginRequiredMixin, CreateView):
@@ -52,8 +54,7 @@ def Folder_Create(request,pk):
 
         if form.is_valid():
             new_folder = form.save(commit=False)
-            if pk:
-                new_folder.linkedfolder = Folder.objects.get(pk=pk)
+            new_folder.linkedfolder = Folder.objects.get(pk=pk)
             new_folder.user = request.user
             new_folder.save()
             return redirect('fileshare:detail',pk)
@@ -195,4 +196,26 @@ class FileUpdate(UpdateView):
 #     else:
 #         form = FolderUploadForm(None)
 #         return render(request,'fileshare/file_form.html',{'form':form })
+<<<<<<< HEAD
 #----------------------------------------------------------------------------------------------------------
+=======
+#----------------------------------------------------------------------------------------------------------
+
+def select(request,pk):
+    folder = get_object_or_404(Folder,pk=pk)
+    files = folder.file_set.all()
+    folders = folder.folder_set.all()
+    context={'folder':folder,'folders':folders,'files':files}
+    return render(request,'fileshare/select.html',context)
+
+def list_delete(request,pk):
+    folder_list = request.GET.getlist('folder')
+    file_list = request.GET.getlist('file')
+    for p in folder_list:
+        folder = Folder.objects.get(pk=p)
+        folder.delete()
+    for p in file_list:
+        file = File.objects.get(pk=p)
+        file.delete()
+    return redirect('fileshare:detail',pk)
+>>>>>>> 9f2fcdb036af54bd2439e61b72e452a96f3293a5
