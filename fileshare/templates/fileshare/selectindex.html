@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<form action="{% url 'fileshare:list_delete' folder.pk %}" method="get">
+<form action="{% url 'fileshare:list_delete_index' %}" method="get">
   <h2>Folders</h2>
   {% for f in folders %}
     <div class="form-check">

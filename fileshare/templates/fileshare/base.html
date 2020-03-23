@@ -9,6 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <!-- <link rel="stylesheet" href="{% static 'music/style.css' %}" type="text/css" /> -->
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>{% block title %}Fileshare{% endblock %}</title>
   </head>
   <body>
@@ -27,7 +28,7 @@
 <!-- <ul class="navbar-nav ml-auto justify-content-end">    ->Can also use this to make it align right-->
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="#"> Select &nbsp;</a>
+            <a class="nav-link" href="{% url 'fileshare:select_index' %}"> Select &nbsp;</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'fileshare:folder-add' %}"><i class='fas fa-plus'></i> Add Folder &nbsp;</a>

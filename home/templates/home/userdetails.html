@@ -18,23 +18,40 @@
 
 <h2>Folders</h2>
 {% if folders %}
-<ul>
+<div class="list-group">
   {% for f in folders %}
-  <li> <a href="{% url 'home:userdetails' f.id %}">{{ f }} </a> </li>
+   <a href="{% url 'home:userdetails' f.id %}" class="list-group-item list-group-item-action list-group-item-secondary "><i class='fas fa-folder'></i> {{ f }} </a>
   {% endfor %}
-</ul>
+</div>
 {% else %}
   <h3> No folders here yet :( </h3>
 {% endif %}
 
 <h2>Files</h2>
-<ul>
-  {% if files %}
-  {% for file in files %}
-  <li> <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
-  </li>
-  {% endfor %}
-</ul>
+{% if files %}
+<div class="table-responsive">
+   <table class="table table-hover">
+     <thead style="border-color:white">
+       <tr>
+         <th>File</th>
+         <th>Uploaded On</th>
+         <th>Action</th>
+       </tr>
+     </thead>
+     <tbody>
+         {% for file in files %}
+         <tr>
+           <td> <a href="{{ file.file.url }}" target="_blank"><i class="fas fa-file"></i> {{ file.name }} </a> </td>
+           <td> {{ file.created_on }}</td>
+           <td>
+             <a href="{{ file.file.url }}" target="_blank" download><button type="button" class="btn btn-primary">Download</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+           </td>
+
+         </tr>
+        {% endfor %}
+     </tbody>
+   </table>
+ </div>
 {% else %}
   <h3> No files here yet :( </h3>
 {% endif %}

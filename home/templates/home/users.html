@@ -1,13 +1,12 @@
 {% extends 'home/base.html' %}
 
 {% block body %}
-  <ul>
-    {% for u in all_users %}
-      {% if not u.pk is current_user.pk %}
-        <li> <a href="{% url 'home:userindex' u.pk %}">{{ u.username }}</a> </li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-
+  <div class="list-group">
+      {% for u in all_users %}
+        {% if not u.pk is current_user.pk %}
+          <a href="{% url 'home:userindex' u.pk %}" class="list-group-item list-group-item-action list-group-item-secondary "><i class='fas fa-user'></i> {{ u.username }}</a>
+        {% endif %}
+      {% endfor %}
+  </div>
 
 {% endblock %}

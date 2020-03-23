@@ -41,46 +41,60 @@
 
 <h2>Folders</h2>
 {% if folders %}
-<ul>
+<div class="list-group">
+  <div class="list-group">
   {% for f in folders %}
-  <li> <a href="{% url 'fileshare:detail' f.id %}">{{ f }} </a> </li>
+   <a href="{% url 'fileshare:detail' f.id %}" class="list-group-item list-group-item-action list-group-item-secondary "><i class='fas fa-folder'></i> {{ f }} </a>
   {% endfor %}
-</ul>
+</div>
 {% else %}
   <h3> No folders here yet :( </h3>
 {% endif %}
 <h2>Files</h2>
 
 {% if files %}
-<ul>
-  {% for file in files %}
-  <li> <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>  <a href="{{ file.file.url }}" target="_blank" download><button type="button" class="btn btn-primary">Download</button></a>
-    <a href="{% url 'fileshare:file-update' file.pk %}"> <button type="button" class="btn btn-secondary"> Edit </button> </a>
+<div class="table-responsive">
+   <table class="table table-hover">
+     <thead style="border-color:white">
+       <tr>
+         <th>File</th>
+         <th>Uploaded On</th>
+         <th>Action</th>
+       </tr>
+     </thead>
+     <tbody>
+         {% for file in files %}
+         <tr>
+           <td> <a href="{{ file.file.url }}" target="_blank"><i class="fas fa-file"></i> {{ file.name }} </a> </td>
+           <td> {{ file.created_on }}</td>
+           <td>
+             <a href="{{ file.file.url }}" target="_blank" download><button type="button" class="btn btn-primary">Download</button></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <a href="{% url 'fileshare:file-update' file.pk %}"> <button type="button" class="btn btn-secondary"> Edit </button> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal{{file.pk}}">Delete </button>
+             <div class="modal" id="myModal{{file.pk}}">
+               <div class="modal-dialog">
+                 <div class="modal-content">
+                   <div class="modal-header">
+                     <h4 class="modal-title"> Delete </h4>
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                   </div>
 
-    <!-- <a href="{% url 'fileshare:file-delete' file.pk %}"><button type="button" class="btn btn-danger"> Delete </button> </a> -->
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#Modal{{file.pk}}"> Delete </button>
-    <!-- Here each modal should have its respective div-id. So we tagged file.pk to name of id -->
-    <div class="modal" id="Modal{{file.pk}}">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title"> Delete </h4>
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-          </div>
+                   <div class="modal-body"> Are you sure to delete ? </div>
 
-          <div class="modal-body"> Are you sure to delete this file? </div>
+                   <div class="modal-footer">
+                     <button type="button" class="btn btn-light" data-dismiss="modal"> Cancel </button>
+                     <a href="{% url 'fileshare:file-delete' file.pk %}"> <button type="button" class="btn btn-danger"> Delete </button> </a>
+                   </div>
 
-          <div class="modal-footer">
-            <button type="button" class="btn btn-light" data-dismiss="modal"> Cancel </button>
-            <a href="{% url 'fileshare:file-delete' file.pk %}"> <button type="button" class="btn btn-danger"> Delete </button></a>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </li>
-  {% endfor %}
-</ul>
+                 </div>
+               </div>
+             </div>
+           </td>
+         </tr>
+        {% endfor %}
+     </tbody>
+   </table>
+ </div>
 {% else %}
 <h3> No files here yet :( </h3>
 {% endif %}

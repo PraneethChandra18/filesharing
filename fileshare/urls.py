@@ -15,7 +15,9 @@ urlpatterns = [
     path('file/delete/<int:pk>',views.FileDelete.as_view(),name='file-delete'),
     path('file/update/<int:pk>',views.FileUpdate.as_view(),name='file-update'),
     path('select/<int:pk>/',views.select,name='select'),
+    path('select_index/',views.selectindex,name='select_index'),
     path('list_delete/<int:pk>/',views.list_delete,name='list_delete'),
+    path('list_delete_index/',views.list_delete_index,name='list_delete_index'),
     # path('folder/upload/',views.AddFolder,name='folder-upload'),
     # path('folder/upload/<int:pk>',views.AddLinkedFolder,name='linked-folder-upload'),
 ]

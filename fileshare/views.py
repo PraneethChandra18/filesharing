@@ -115,6 +115,7 @@ def AddFile(request):
             for field in request.FILES.keys():
                 for formfile in request.FILES.getlist(field):
                     f = File(file=formfile,user=request.user)
+                    f.name = f.filename()
                     f.save()
             return redirect('fileshare:index')
         else:
@@ -130,6 +131,7 @@ def AddLinkedFile(request,pk):
         if form.is_valid():
             for field in request.FILES.keys():
                 for formfile in request.FILES.getlist(field):
+                    #print(str(os.path.abspath(formfile.path)))
                     f = File(file=formfile,user=request.user,folder=Folder.objects.get(pk=pk))
                     # print(str(os.path.abspath(f.file.name)))
                     f.name = f.filename()
@@ -212,3 +214,22 @@ def list_delete(request,pk):
         file = File.objects.get(pk=p)
         file.delete()
     return redirect('fileshare:detail',pk)
+
+def selectindex(request):
+    user_folders = Folder.objects.filter(user=request.user)
+    user_files = File.objects.filter(user=request.user)
+    all_folders = user_folders.filter(linkedfolder__isnull=True)
+    all_files = user_files.filter(folder__isnull=True)
+    context = { 'folders':all_folders,'files':all_files }
+    return render(request,'fileshare/selectindex.html',context)
+
+def list_delete_index(request):
+    folder_list = request.GET.getlist('folder')
+    file_list = request.GET.getlist('file')
+    for p in folder_list:
+        folder = Folder.objects.get(pk=p)
+        folder.delete()
+    for p in file_list:
+        file = File.objects.get(pk=p)
+        file.delete()
+    return redirect('fileshare:index')
