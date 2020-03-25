@@ -18,7 +18,7 @@ urlpatterns = [
     path('select_index/',views.selectindex,name='select_index'),
     path('list_delete/<int:pk>/',views.list_delete,name='list_delete'),
     path('list_delete_index/',views.list_delete_index,name='list_delete_index'),
-    path('list_download/<int:pk>/',views.list_download,name='list_download'),
+    path('list_download/',views.list_download,name='list_download'),
     path('download/<int:pk>/',views.download,name='download'),
 
     # path('folder/upload/',views.AddFolder,name='folder-upload'),

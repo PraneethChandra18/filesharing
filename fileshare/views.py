@@ -9,8 +9,10 @@ import time
 from threading import Timer
 from .models import Folder, File
 from .forms import FolderForm, FileForm #FolderUploadForm
-import os
-from django.http import FileResponse
+import requests
+import os, io
+import zipfile
+from django.http import FileResponse, HttpResponse
 from django.utils.text import slugify
 
 # Create your views here.
@@ -240,11 +242,36 @@ def download(request,pk):
         "filename=%s.%s" %(slugify(item.file.name)[:x], file_extension)
     return response
 
-def list_download(request,pk):
+def list_download(request):
     file_list = request.GET.getlist('file')
+    zip_subdir = "download_folder"
+    zip_filename = zip_subdir + ".zip"
+    byte_stream = io.BytesIO()
+    zf = zipfile.ZipFile(byte_stream, "w")
+
     for p in file_list:
-        download(p)
-    return redirect('fileshare:detail',pk)
+        item = get_object_or_404(File, pk=p)
+        file_name, file_extension = os.path.splitext(item.file.file.name)
+        file_extension = file_extension[1:] # removes dot
+        x = -1*len(file_extension)
+        response = HttpResponse(item.file.file,
+            content_type = "file/%s" % file_extension)
+        response["Content-Disposition"] = "attachment;"\
+            "filename=%s.%s" %(slugify(item.file.name)[:x], file_extension)
+
+        filename = slugify(item.file.name)[:x]
+        filename = filename + "." + file_extension
+        f1 = open(filename , 'wb')
+        f1.write(response.content)
+        f1.close()
+
+        zip_path = os.path.join(zip_subdir, filename)
+        zf.write(filename, zip_path)
+
+    zf.close()
+    response = HttpResponse(byte_stream.getvalue(), content_type="application/x-zip-compressed")
+    response['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+    return response
 
 
 
