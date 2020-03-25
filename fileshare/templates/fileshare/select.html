@@ -40,6 +40,7 @@
       </div>
     </div>
   </div>
+  <button type="submit" class="btn btn-primary" formaction="{% url 'fileshare:list_download' folder.pk %}">Download</button>
 </form>
 
 {% endblock %}

@@ -10,6 +10,9 @@ from threading import Timer
 from .models import Folder, File
 from .forms import FolderForm, FileForm #FolderUploadForm
 import os
+from django.http import FileResponse
+from django.utils.text import slugify
+
 # Create your views here.
 
 def index(request):
@@ -45,22 +48,33 @@ class FolderCreate(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super(FolderCreate, self).form_valid(form)
 
+# def Folder_Create(request,pk):
+#     if request.method == 'POST':
+#         form = FolderForm(request.POST)
+#
+#         if form.is_valid():
+#             new_folder = form.save(commit=False)
+#             new_folder.linkedfolder = Folder.objects.get(pk=pk)
+#             new_folder.user = request.user
+#             new_folder.save()
+#             return redirect('fileshare:detail',pk)
+#         else :
+#             return render(request,'fileshare/folder_form.html',{'form':form})
+#     else :
+#         form = FolderForm(None)
+#         return render(request,'fileshare/folder_form.html',{'form':form})
+
+
 def Folder_Create(request,pk):
-    if request.method == 'POST':
-        form = FolderForm(request.POST)
+    form = FolderForm(None)
 
-        if form.is_valid():
-            new_folder = form.save(commit=False)
-            new_folder.linkedfolder = Folder.objects.get(pk=pk)
-            new_folder.user = request.user
-            new_folder.save()
-            return redirect('fileshare:detail',pk)
-        else :
-            return render(request,'fileshare/folder_form.html',{'form':form})
-    else :
-        form = FolderForm(None)
-        return render(request,'fileshare/folder_form.html',{'form':form})
-
+    n = request.GET.get('name')
+    new_folder = form.save(commit=False)
+    new_folder.name = n
+    new_folder.linkedfolder = Folder.objects.get(pk=pk)
+    new_folder.user = request.user
+    new_folder.save()
+    return redirect('fileshare:detail',pk)
 # Use modals(bootstrap) in form.html
 #------------------------------------------------------------------------------------------------------
 
@@ -214,6 +228,25 @@ def list_delete(request,pk):
         file = File.objects.get(pk=p)
         file.delete()
     return redirect('fileshare:detail',pk)
+
+def download(request,pk):
+    item = get_object_or_404(File, pk=pk)
+    file_name, file_extension = os.path.splitext(item.file.file.name)
+    file_extension = file_extension[1:] # removes dot
+    x = -1*len(file_extension)
+    response = FileResponse(item.file.file,
+        content_type = "file/%s" % file_extension)
+    response["Content-Disposition"] = "attachment;"\
+        "filename=%s.%s" %(slugify(item.file.name)[:x], file_extension)
+    return response
+
+def list_download(request,pk):
+    file_list = request.GET.getlist('file')
+    for p in file_list:
+        download(p)
+    return redirect('fileshare:detail',pk)
+
+
 
 def selectindex(request):
     user_folders = Folder.objects.filter(user=request.user)
