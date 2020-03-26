@@ -63,3 +63,19 @@ def search(request):
 
     else:
         return render(request,'home/error.html')
+
+def select(request,pk):
+    folder = get_object_or_404(Folder,pk=pk)
+    files = folder.file_set.all()
+    folders = folder.folder_set.all()
+    context={'folder':folder,'folders':folders,'files':files}
+    return render(request,'home/select.html',context)
+
+def selectindex(request,pk):
+    user = User.objects.get(pk=pk)
+    user_folders = Folder.objects.filter(user=user)
+    user_files = File.objects.filter(user=user)
+    all_folders = user_folders.filter(linkedfolder__isnull=True)
+    all_files = user_files.filter(folder__isnull=True)
+    context = { 'folders':all_folders,'files':all_files }
+    return render(request,'home/selectindex.html',context)

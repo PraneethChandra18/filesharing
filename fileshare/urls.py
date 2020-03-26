@@ -20,6 +20,7 @@ urlpatterns = [
     path('list_delete_index/',views.list_delete_index,name='list_delete_index'),
     path('list_download/',views.list_download,name='list_download'),
     path('download/<int:pk>/',views.download,name='download'),
+    path('folder_upload/<int:pk>/',views.FolderUpload,name='folder-upload'),
 
     # path('folder/upload/',views.AddFolder,name='folder-upload'),
     # path('folder/upload/<int:pk>',views.AddLinkedFolder,name='linked-folder-upload'),

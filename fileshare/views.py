@@ -78,7 +78,7 @@ def Folder_Create(request,pk):
     new_folder.save()
     return redirect('fileshare:detail',pk)
 # Use modals(bootstrap) in form.html
-#------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
 
 class FolderDelete(DeleteView):
     model = Folder
@@ -99,8 +99,16 @@ class FolderUpdate(UpdateView):
     model = Folder
     fields = ['name']
 
-#------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------
 
+def FolderUpload(request,pk):
+    n = request.GET.get('name')
+    files = request.GET.getlist('folder')
+    for file in files:
+        print((os.path.abspath(file.path)))
+    return redirect('fileshare:detail',pk)
+
+#-----------------------------------------------------------------------------------------------------
 # class FileAdd(CreateView):
 #     model = File
 #     fields = ['file']
@@ -293,3 +301,23 @@ def list_delete_index(request):
         file = File.objects.get(pk=p)
         file.delete()
     return redirect('fileshare:index')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Todo
+
+# 2. Folder download as zip file
+# 3. Folder Upload as zip file
+# 4. Give the same options for home app too
+# 5. Keep select all option

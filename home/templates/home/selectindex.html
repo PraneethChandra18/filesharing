@@ -1,0 +1,38 @@
+{% extends 'fileshare/base.html'%}
+
+{% block body %}
+
+<form action="{% url 'fileshare:list_download' %}" method="get">
+  <h2>Folders</h2>
+  {% for f in folders %}
+    <div class="form-check">
+      <label class="form-check-label" for="check1">
+        <input type="checkbox" class="form-check-input" id="check1{{f.pk}}" name="folder" value="{{ f.pk }}">{{ f }}
+      </label>
+    </div>
+  {% endfor %}
+
+  <h2>Files</h2>
+  {% for f in files %}
+    <div class="form-check">
+      <label class="form-check-label" for="check1">
+        <input type="checkbox" class="form-check-input" id="check2{{f.pk}}" name="file" value="{{ f.pk }}">{{ f }}
+      </label>
+    </div>
+  {% endfor %}
+
+  <button type="submit" class="btn btn-primary">Download</button>
+</form>
+<br>
+<br>
+<button onclick="goBack()" class="btn btn-success">Go Back</button>
+
+
+<script>
+function goBack() {
+  window.history.go(-1);
+}
+</script>
+
+
+{% endblock %}

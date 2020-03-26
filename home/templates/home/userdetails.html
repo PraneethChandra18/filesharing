@@ -2,6 +2,7 @@
 
 {% block body %}
 
+<a href="{% url 'home:select' folder_id %}"> <button type="button" class="btn btn-success"> Select </button> </a>
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item"> <a href="{% url 'home:users' %}"> Home </a></li>

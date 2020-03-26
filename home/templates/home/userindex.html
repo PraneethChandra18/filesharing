@@ -2,6 +2,8 @@
 
 {% block body %}
 
+<a href="{% url 'home:select_index' u.pk %}"> <button type="button" class="btn btn-success"> Select </button> </a>
+
 <ol class="breadcrumb">
   <li class="breadcrumb-item"> <a href="{% url 'home:users' %}"> Home </a></li>
   <li class="breadcrumb-item"> <a href="{% url 'home:userindex' u.pk %}"> {{ u.username }} </a> </li>

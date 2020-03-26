@@ -44,6 +44,14 @@
 </form>
 <br>
 <br>
-<a href="{% url 'fileshare:index' %}"><button type="button" class="btn btn-success">Go Back</button></a>
+<button onclick="goBack()" class="btn btn-success">Go Back</button>
+
+
+<script>
+function goBack() {
+  window.history.go(-1);
+}
+</script>
+
 
 {% endblock %}
