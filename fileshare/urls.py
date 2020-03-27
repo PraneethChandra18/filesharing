@@ -19,8 +19,10 @@ urlpatterns = [
     path('list_delete/<int:pk>/',views.list_delete,name='list_delete'),
     path('list_delete_index/',views.list_delete_index,name='list_delete_index'),
     path('list_download/',views.list_download,name='list_download'),
-    path('download/<int:pk>/',views.download,name='download'),
+    path('download/<int:pk>/',views.download_file,name='download'),
     path('folder_upload/<int:pk>/',views.FolderUpload,name='folder-upload'),
+    path('download_folder/<int:pk>/',views.download_folder,name='download_folder'),
+    path('file_folder_download/',views.list_folder_file_download,name='list_folder_file_download'),
 
     # path('folder/upload/',views.AddFolder,name='folder-upload'),
     # path('folder/upload/<int:pk>',views.AddLinkedFolder,name='linked-folder-upload'),

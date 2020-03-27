@@ -104,6 +104,8 @@ class FolderUpdate(UpdateView):
 def FolderUpload(request,pk):
     n = request.GET.get('name')
     files = request.GET.getlist('folder')
+    print("hi")
+    print(files)
     for file in files:
         print((os.path.abspath(file.path)))
     return redirect('fileshare:detail',pk)
@@ -239,7 +241,7 @@ def list_delete(request,pk):
         file.delete()
     return redirect('fileshare:detail',pk)
 
-def download(request,pk):
+def download_file(request,pk):
     item = get_object_or_404(File, pk=pk)
     file_name, file_extension = os.path.splitext(item.file.file.name)
     file_extension = file_extension[1:] # removes dot
@@ -247,7 +249,7 @@ def download(request,pk):
     response = FileResponse(item.file.file,
         content_type = "file/%s" % file_extension)
     response["Content-Disposition"] = "attachment;"\
-        "filename=%s.%s" %(slugify(item.file.name)[:x], file_extension)
+        "filename=%s.%s" %(slugify(item.name)[:x], file_extension)
     return response
 
 def list_download(request):
@@ -257,6 +259,14 @@ def list_download(request):
     byte_stream = io.BytesIO()
     zf = zipfile.ZipFile(byte_stream, "w")
 
+    zf = filelistdownload(file_list,zf,zip_subdir)
+    zf.close()
+    response = HttpResponse(byte_stream.getvalue(), content_type="application/x-zip-compressed")
+    response['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+    return response
+
+#This function is used to use list_download recursive
+def filelistdownload(file_list,zf,zip_subdir):
     for p in file_list:
         item = get_object_or_404(File, pk=p)
         file_name, file_extension = os.path.splitext(item.file.file.name)
@@ -267,7 +277,7 @@ def list_download(request):
         response["Content-Disposition"] = "attachment;"\
             "filename=%s.%s" %(slugify(item.file.name)[:x], file_extension)
 
-        filename = slugify(item.file.name)[:x]
+        filename = slugify(item.name)[:x]
         filename = filename + "." + file_extension
         f1 = open(filename , 'wb')
         f1.write(response.content)
@@ -276,11 +286,107 @@ def list_download(request):
         zip_path = os.path.join(zip_subdir, filename)
         zf.write(filename, zip_path)
 
+    # This loop is to remove those files which are being created due to f1.write()
+    for p in file_list:
+        item = get_object_or_404(File, pk=p)
+        file_name, file_extension = os.path.splitext(item.file.file.name)
+        file_extension = file_extension[1:] # removes dot
+        x = -1*len(file_extension)
+        filename = slugify(item.name)[:x]
+        filename = filename + "." + file_extension
+
+        location = os.path.abspath(filename)
+        os.remove(location)
+
+    return zf
+
+
+def download_folder(request,pk):
+    folder = get_object_or_404(Folder, pk=pk)
+    folder_name = folder.name
+    zip_subdir = folder_name
+    zip_filename = zip_subdir + ".zip"
+    byte_stream = io.BytesIO()
+    zf = zipfile.ZipFile(byte_stream, "w")
+
+    folder_list = Folder.objects.filter(linkedfolder=folder)
+    file_list = File.objects.filter(folder=folder)
+
+    zf = zip_them_all(file_list,folder_list,zip_subdir,zf)
+
     zf.close()
     response = HttpResponse(byte_stream.getvalue(), content_type="application/x-zip-compressed")
     response['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
     return response
 
+#This function is used to use download_folder recursive
+def zip_them_all(file_list,folder_list,zip_path,zf):
+    for p in file_list:
+        item = p
+        file_name, file_extension = os.path.splitext(item.file.file.name)
+        file_extension = file_extension[1:] # removes dot
+        x = -1*len(file_extension)
+        response = HttpResponse(item.file.file,
+            content_type = "file/%s" % file_extension)
+        response["Content-Disposition"] = "attachment;"\
+            "filename=%s.%s" %(slugify(item.name)[:x], file_extension)
+
+        filename = slugify(item.name)[:x]
+        filename = filename + "." + file_extension
+        f1 = open(filename , 'wb')
+        f1.write(response.content)
+        f1.close()
+
+        pa = os.path.join(zip_path,filename)
+        zf.write(filename,pa, zipfile.ZIP_DEFLATED)
+
+    # This loop is to remove those files which are being created due to f1.write()
+    for p in file_list:
+        item = p
+        file_name, file_extension = os.path.splitext(item.file.file.name)
+        file_extension = file_extension[1:] # removes dot
+        x = -1*len(file_extension)
+        filename = slugify(item.name)[:x]
+        filename = filename + "." + file_extension
+
+        location = os.path.abspath(filename)
+        os.remove(location)
+
+
+    for p in folder_list:
+        dir = p.name
+        z_path = os.path.join(zip_path, dir)
+        fo_list = Folder.objects.filter(linkedfolder=p)
+        fi_list = File.objects.filter(folder=p)
+        zf = zip_them_all(fi_list,fo_list,z_path,zf)
+
+
+    return zf
+
+def list_folder_file_download(request):
+    file_list = request.GET.getlist('file')
+    folder_list = request.GET.getlist('folder')
+
+    zip_subdir = "download_folder"
+    zip_filename = zip_subdir + ".zip"
+    byte_stream = io.BytesIO()
+    zf = zipfile.ZipFile(byte_stream, "w")
+
+    fi_list = File.objects.none()
+    fo_list = Folder.objects.none()
+
+    for f in file_list:
+        fi_list = fi_list | File.objects.filter(pk=f)
+
+    for f in folder_list:
+        fo_list = fo_list | Folder.objects.filter(pk=f)
+
+    zf = zip_them_all(fi_list,fo_list,zip_subdir,zf)
+
+    zf.close()
+    response = HttpResponse(byte_stream.getvalue(), content_type="application/x-zip-compressed")
+    response['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+    return response
 
 
 def selectindex(request):
@@ -290,6 +396,7 @@ def selectindex(request):
     all_files = user_files.filter(folder__isnull=True)
     context = { 'folders':all_folders,'files':all_files }
     return render(request,'fileshare/selectindex.html',context)
+
 
 def list_delete_index(request):
     folder_list = request.GET.getlist('folder')
@@ -306,18 +413,6 @@ def list_delete_index(request):
 
 
 
-
-
-
-
-
-
-
-
-
 # Todo
 
-# 2. Folder download as zip file
-# 3. Folder Upload as zip file
-# 4. Give the same options for home app too
-# 5. Keep select all option
+#  Folder Upload
