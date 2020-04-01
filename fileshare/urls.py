@@ -21,6 +21,7 @@ urlpatterns = [
     path('list_download/',views.list_download,name='list_download'),
     path('download/<int:pk>/',views.download_file,name='download'),
     path('folder_upload/<int:pk>/',views.FolderUpload,name='folder-upload'),
+    path('folder_upload_index/',views.FolderUploadIndex,name='folder-upload-index'),
     path('download_folder/<int:pk>/',views.download_folder,name='download_folder'),
     path('file_folder_download/',views.list_folder_file_download,name='list_folder_file_download'),
 

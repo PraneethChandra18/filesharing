@@ -8,7 +8,7 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p><label for="id_file">File:   </label>
-    <input id="id_file" type="file" name="file" onchange="form.submit()" required /></p>
+    <input id="id_file" type="file" multiple name="file" onchange="form.submit()" required /></p>
   </form>
 </div>
 
@@ -17,7 +17,7 @@
   $(document).ready(function(){
     $('#id_file').attr("multiple","true");
   };)
-  
+
   window.onload = function(){
     var button = document.getElementById("id_file");
     button.click();
