@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- {% load static %} -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -13,7 +14,7 @@
     <title>{% block title %}Fileshare{% endblock %}</title>
   </head>
   <body>
-    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
       <a class="navbar-brand" href="{% url 'home:users' %}"><span style="font-family:American Typewriter, serif">FShare</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
         <span class="navbar-toggler-icon"></span>
@@ -22,7 +23,7 @@
         <div class="mx-auto order-0">
           <form class="form-inline" action="{% url 'home:search' %}" role="search" method="get">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" name="q" value="{{ request.GET.q }}">
-            <button class="btn btn-default" type="submit" style="background-color:white"> Search&nbsp;</button>
+            <button class="btn btn-primary" type="submit"> Search&nbsp;</button>
           </form>
         </div>
 <!-- <ul class="navbar-nav ml-auto justify-content-end">    ->Can also use this to make it align right-->

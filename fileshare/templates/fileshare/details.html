@@ -2,6 +2,17 @@
 
 {% block body %}
 
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"> <a href="{% url 'fileshare:index' %}"> {{ user.username }} </a> </li>
+  {% for parent in parent_list %}
+    {% if parent is not active_folder %}
+      <li class="breadcrumb-item"> <a href="{% url 'fileshare:detail' parent.id %}"> {{ parent }}</a> </li>
+    {% else %}
+    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'fileshare:detail' parent.id %}" style="color:black"> {{ parent }}</a></li>
+    {% endif %}
+  {% endfor %}
+</ol>
+
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalAddFolder"> Add Folder </button>
 <div class="modal" id="myModalAddFolder">
   <div class="modal-dialog">
@@ -78,17 +89,6 @@
     </div>
   </div>
 </div>
-
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"> <a href="{% url 'fileshare:index' %}"> {{ user.username }} </a> </li>
-  {% for parent in parent_list %}
-    {% if parent is not active_folder %}
-      <li class="breadcrumb-item"> <a href="{% url 'fileshare:detail' parent.id %}"> {{ parent }}</a> </li>
-    {% else %}
-    <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'fileshare:detail' parent.id %}" style="color:black"> {{ parent }}</a></li>
-    {% endif %}
-  {% endfor %}
-</ol>
 
 <h2>Folders</h2>
 {% if folders %}
