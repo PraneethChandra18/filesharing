@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render , redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView,FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from datetime import date, datetime
 import time
@@ -24,6 +26,7 @@ def detail(request,folder_id):
     folder = get_object_or_404(Folder,pk=folder_id)
     files = folder.file_set.all()
     folders = folder.folder_set.all()
+
     # Try folder_set.all() when model is 'folder' instead of 'Folder'
     temp = folder
     parent_list = []
@@ -196,40 +199,3 @@ class FileUpdate(UpdateView):
 #         form = FolderUploadForm(None)
 #         return render(request,'fileshare/file_form.html',{'form':form })
 #----------------------------------------------------------------------------------------------------------
-
-def select(request,pk):
-    folder = get_object_or_404(Folder,pk=pk)
-    files = folder.file_set.all()
-    folders = folder.folder_set.all()
-    context={'folder':folder,'folders':folders,'files':files}
-    return render(request,'fileshare/select.html',context)
-
-def list_delete(request,pk):
-    folder_list = request.GET.getlist('folder')
-    file_list = request.GET.getlist('file')
-    for p in folder_list:
-        folder = Folder.objects.get(pk=p)
-        folder.delete()
-    for p in file_list:
-        file = File.objects.get(pk=p)
-        file.delete()
-    return redirect('fileshare:detail',pk)
-
-def selectindex(request):
-    user_folders = Folder.objects.filter(user=request.user)
-    user_files = File.objects.filter(user=request.user)
-    all_folders = user_folders.filter(linkedfolder__isnull=True)
-    all_files = user_files.filter(folder__isnull=True)
-    context = { 'folders':all_folders,'files':all_files }
-    return render(request,'fileshare/selectindex.html',context)
-
-def list_delete_index(request):
-    folder_list = request.GET.getlist('folder')
-    file_list = request.GET.getlist('file')
-    for p in folder_list:
-        folder = Folder.objects.get(pk=p)
-        folder.delete()
-    for p in file_list:
-        file = File.objects.get(pk=p)
-        file.delete()
-    return redirect('fileshare:index')

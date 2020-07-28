@@ -9,3 +9,4 @@ urlpatterns = [
     path('detail/<int:folder_id>', views.userdetails,name='userdetails'),
     path('search/', views.search,name='search'),
 ]
+ 

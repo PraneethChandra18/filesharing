@@ -13,7 +13,6 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 # Create your views here.
 
-
 def users(request):
     all_users = User.objects.all()
     current_user = request.user

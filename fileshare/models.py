@@ -15,7 +15,7 @@ class Folder(models.Model):
         return reverse('fileshare:index')
 
     def __str__(self):
-        return self.name
+        return self.name 
 
 class File(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
