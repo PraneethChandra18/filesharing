@@ -13,7 +13,20 @@
   {% endfor %}
 </ol>
 
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalAddFolder"> Add Folder </button>
+<div class="dropdown" align="right" style="padding: 0px 40px 0px 0px">
+    <button type="button" class="btn btn-primary " data-toggle="dropdown"><i class='fas fa-plus' style='font-size:20px'></i> &nbsp; New </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="{% url 'fileshare:select' folder_id %}">Select</a>
+      <a class="dropdown-item" data-toggle="modal" data-target="#myModalAddFolder">Add Folder</a>
+      <a class="dropdown-item" href="{% url 'fileshare:folder-upload' folder_id %}">Upload Folder</a>
+      <a class="dropdown-item" href="{% url 'fileshare:linked-file-add' folder_id %}">Upload File </a>
+      <a class="dropdown-item" href="{% url 'fileshare:folder-update' folder_id %}">Rename </a>
+      <a class="dropdown-item" href="{% url 'fileshare:download_folder' folder_id %}">Download</a>
+      <a class="dropdown-item" data-toggle="modal" data-target="#myModaldelete">Delete Folder</a>
+    </div>
+</div>
+
+<!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalAddFolder"> Add Folder </button> -->
 <div class="modal" id="myModalAddFolder">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -37,7 +50,7 @@
   </div>
 </div>
 
-<a href="{% url 'fileshare:folder-upload' folder_id %}"><button type="button" class="btn btn-success">Upload Folder</button></a>
+<!-- <a href="{% url 'fileshare:folder-upload' folder_id %}"><button type="button" class="btn btn-success">Upload Folder</button></a> -->
 <!-- <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalUploadFolder"> Upload Folder </button>
 <div class="modal" id="myModalUploadFolder">
   <div class="modal-dialog">
@@ -64,13 +77,13 @@
   </div>
 </div> -->
 
-<a href="{% url 'fileshare:linked-file-add' folder_id %}"> <button type="button" class="btn btn-primary"> Upload Files </button> </a>
+<!-- <a href="{% url 'fileshare:linked-file-add' folder_id %}"> <button type="button" class="btn btn-primary"> Upload Files </button> </a>
 <a href="{% url 'fileshare:folder-update' folder_id %}"> <button type="button" class="btn btn-secondary"> Edit </button> </a>
 <a href="{% url 'fileshare:select' folder_id %}"> <button type="button" class="btn btn-success"> Select </button> </a>
-<a href="{% url 'fileshare:download_folder' folder_id %}"> <button type="button" class="btn btn-primary"> Download </button> </a>
+<a href="{% url 'fileshare:download_folder' folder_id %}"> <button type="button" class="btn btn-primary"> Download </button> </a> -->
 
 
-<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModaldelete"> Delete </button>
+<!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModaldelete"> Delete </button> -->
 <div class="modal" id="myModaldelete">
   <div class="modal-dialog">
     <div class="modal-content">
