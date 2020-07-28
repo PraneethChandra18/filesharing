@@ -1,0 +1,47 @@
+{% extends 'fileshare/base.html'%}
+
+{% block body %}
+
+<form action="" method="get">
+  <h2>Folders</h2>
+  <button type="button" class="btn btn-secondary"><input type="checkbox" onClick="toggle(this,'folder')" /> Select All Folders</button><br/>
+  {% for f in folders %}
+    <div class="form-check">
+      <label class="form-check-label" for="check1">
+        <input type="checkbox" class="form-check-input" id="check1{{f.pk}}" name="folder" value="{{ f.pk }}">{{ f }}
+      </label>
+    </div>
+  {% endfor %}
+
+  <h2>Files</h2>
+  <button type="button" class="btn btn-secondary"><input type="checkbox" onClick="toggle(this,'file')" /> Select All Files</button><br/>
+  {% for f in files %}
+    <div class="form-check">
+      <label class="form-check-label" for="check1">
+        <input type="checkbox" class="form-check-input" id="check2{{f.pk}}" name="file" value="{{ f.pk }}">{{ f }}
+      </label>
+    </div>
+  {% endfor %}
+<br/>
+<button type="submit" class="btn btn-primary" id="download" formaction="{% url 'fileshare:list_folder_file_download' %}">Download</button>
+</form>
+<br>
+<br>
+<button onclick="goBack()" class="btn btn-success">Go Back</button>
+
+
+<script>
+function goBack() {
+  window.history.go(-1);
+}
+function toggle(source,name) {
+  checkboxes = document.getElementsByName(name);
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+
+</script>
+
+
+{% endblock %}

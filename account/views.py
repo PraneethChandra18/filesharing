@@ -46,7 +46,7 @@ def login_user(request):
         if user is not None:
             if user.is_active:
                 login(request,user)
-                return redirect('home:users')
+                return redirect('account:login-redirect')
         else:
             return render(request,'account/login_form.html',{'form':form})
     else:

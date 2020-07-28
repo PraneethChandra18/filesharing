@@ -1,6 +1,17 @@
 {% extends 'fileshare/base.html' %}
 
 {% block body %}
+
+<div class="dropdown" align="right" style="padding: 0px 40px 0px 0px">
+    <button type="button" class="btn btn-primary " data-toggle="dropdown"><i class='fas fa-plus' style='font-size:20px'></i> &nbsp; New </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="{% url 'fileshare:select_index' %}">Select</a>
+      <a class="dropdown-item" href="{% url 'fileshare:folder-add' %}">Add Folder</a>
+      <a class="dropdown-item" href="{% url 'fileshare:folder-upload-index' %}">Upload Folder</a>
+      <a class="dropdown-item" href="{% url 'fileshare:file-add' %}">Upload File </a>
+    </div>
+</div>
+
 <h2> Folders </h2>
 {% if all_folders %}
 <div class="list-group">

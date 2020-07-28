@@ -45,9 +45,3 @@ class File(models.Model):
     def delete(self, *args, **kwargs):
         self.file.delete()
         super().delete(*args, **kwargs)
-
-# class FolderUpload(models.Model):
-#     user = models.ForeignKey(User,on_delete=models.CASCADE,default=1)
-#     linkedfolder = models.ForeignKey(Folder,on_delete=models.CASCADE,null=True,blank=True)
-#     folder = models.FileField();
-#     created_on = models.DateTimeField(auto_now_add=True)
